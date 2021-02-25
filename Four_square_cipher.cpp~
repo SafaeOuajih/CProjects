@@ -1,0 +1,17 @@
+//#include "Four_square_cipher.h"
+#include <iostream>
+ #define Matrix_dim 5
+//char ** Matrix_Generator(){
+int main(){
+  int row = 0;
+  int col = 0;
+  char** Alphab_Matrix =(char**) malloc(Matrix_dim*sizeof(char**));
+  for(row =0;row< Matrix_dim;row++){
+    for(col=0;col< Matrix_dim;col++){
+      *(*(Alphab_Matrix+col)+row)='a'+1;
+      std::cout << "%s  \n"<<  *(*(Alphab_Matrix+col)+row);
+    }  
+    
+  }
+  return 0;
+}  
