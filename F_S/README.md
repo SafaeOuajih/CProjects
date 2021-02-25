@@ -1,5 +1,6 @@
-Four-Square Cipher: 
-Encryption
+Four-Square Cipher: \n
+Encryption \n
+
 Rules:
 - Message lenth < 200 
 - Message without 'j' or capital letters 
