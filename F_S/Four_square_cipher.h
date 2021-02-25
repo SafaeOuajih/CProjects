@@ -7,4 +7,7 @@ bool char_in_array(char c , char ** Array);
 int* char_pos(char c, char**Array);
 void Key_Generator();
 char*  encrypt_F_S(char * message);
+char** Key1();
+char** Key2();
 
+#endif

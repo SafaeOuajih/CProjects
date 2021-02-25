@@ -1,5 +1,8 @@
 #include "Four_square_cipher.h"
-
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string.h>
 int main(){
  
   char ** AlphaM = Matrix_Generator();
