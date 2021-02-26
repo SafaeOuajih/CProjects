@@ -113,6 +113,26 @@ char*  encrypt_F_S(char * message){
   return encrypt_m;
 }
 
+char* decrypt_F_S(char* message, char **Key1, char** Key2){
+  
+  int len = strlen(message);
+  int i = 0;
+  int j =0;
+  int * pos1;
+  int * pos2;
+  char ** AlphaM =  Matrix_Generator();
+  char* decrypt_m = (char*)malloc(len*sizeof(char));
+  for(int k=0; k< len ; k=k+2){
+    if((char_in_array(message[k], Key1))&((char_in_array(message[k+1], Key2)))){
+      pos1 = char_pos(message[k], Key1);
+      pos2 = char_pos(message[k+1], Key2);
+      decrypt_m[k]= AlphaM[pos1[0]][pos2[1]];  
+      decrypt_m[k+1]= AlphaM[pos2[0]][pos1[1]];  
+    }
+  }
+  return decrypt_m;
+}
+
 char** Key1(){
   return EKey1;
 }
@@ -122,3 +142,14 @@ char** Key2(){
   return EKey2;
 }
 
+void totwo_dim(char*key, char** Key){
+  int row = 0;
+  int col = 0;
+  int k = 0;
+  for(row =0;row< Matrix_dim;row++){
+    for(col=0;col< Matrix_dim;col++){     
+       *(*(Key + row) + col)= key[k];
+       k++;
+    }
+  }
+}
