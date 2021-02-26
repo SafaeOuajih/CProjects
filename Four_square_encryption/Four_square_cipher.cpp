@@ -8,10 +8,10 @@
 char ** EKey1;
 char ** EKey2;
 
-char ** alloc_array(){
+char ** alloc_array( char** Alphab_Matrix ){
   int row = 0;
   int col = 0;
-  char** Alphab_Matrix =(char**) malloc((Matrix_dim + 1)*sizeof(char*));
+  Alphab_Matrix =(char**) malloc((Matrix_dim + 1)*sizeof(char*));
   for(int i = 0; i<Matrix_dim +1;i++){
     *(Alphab_Matrix+i)=(char*) malloc((Matrix_dim + 1)*sizeof(char));
   }
@@ -24,11 +24,11 @@ char ** alloc_array(){
   }
   return  Alphab_Matrix ;
 }
-char** Matrix_Generator(){
+char** Matrix_Generator(char** Alphab_Matrix){
   int row = 0;
   int col = 0;
-  char** Alphab_Matrix = alloc_array();
-  
+  Alphab_Matrix = alloc_array(Alphab_Matrix);
+ 
   for(row =1;row< Matrix_dim+1;row++){
     for(col=1;col< Matrix_dim+1;col++){
       *(*(Alphab_Matrix + row-1) + col-1)='a'+  ((row-1)% Matrix_dim)*Matrix_dim + col-1 ;
@@ -72,8 +72,8 @@ void Key_Generator(){
   int col = 0;
   srand((unsigned int)time(NULL));
   char c = rand() % ('z'-'a') + 'a';
-  EKey1 = alloc_array();
-  EKey2 = alloc_array();
+  EKey1 = alloc_array(EKey1);
+  EKey2 = alloc_array(EKey2);
   for(row =1;row< Matrix_dim+1;row++){
     for(col=1;col< Matrix_dim+1;col++){
       while(char_in_array(c, EKey1)){
@@ -100,7 +100,7 @@ char*  encrypt_F_S(char * message){
   int j =0;
   int * pos1;
   int * pos2;
-  char ** AlphaM =  Matrix_Generator();
+  char ** AlphaM =  Matrix_Generator(AlphaM);
   char* encrypt_m = (char*)malloc(len*sizeof(char));
   for(int k=0; k< len ; k=k+2){
     if(char_in_array(message[k], AlphaM)){
@@ -120,7 +120,7 @@ char* decrypt_F_S(char* message, char **Key1, char** Key2){
   int j =0;
   int * pos1;
   int * pos2;
-  char ** AlphaM =  Matrix_Generator();
+  char ** AlphaM =  Matrix_Generator(AlphaM);
   char* decrypt_m = (char*)malloc(len*sizeof(char));
   for(int k=0; k< len ; k=k+2){
     if((char_in_array(message[k], Key1))&((char_in_array(message[k+1], Key2)))){

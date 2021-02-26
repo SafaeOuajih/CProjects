@@ -10,7 +10,7 @@ char ** key2;
 
 int main(){
  
-  char ** AlphaM = Matrix_Generator();
+  char ** AlphaM = Matrix_Generator(AlphaM);
   char * m= (char*)malloc(200*sizeof(char));
   char * e_m= (char*)malloc(200*sizeof(char));
   char * d_m= (char*)malloc(200*sizeof(char));
@@ -75,8 +75,8 @@ int main(){
 
     std::cout <<" #Enter The first Key : 25 char \n";
     std::cin >> Key;  
-    key1=alloc_array();
-    key2=alloc_array();    
+    key1=alloc_array(key1);
+    key2=alloc_array(key2);    
     totwo_dim(Key,key1);
     std::cout <<" #Enter The second Key : 25 char \n";	
     std::cin >> Key;
@@ -85,6 +85,13 @@ int main(){
     d_m =  decrypt_F_S(m, key1, key2);
     std::cout <<" #Decrypted message : "<< d_m<<"\n";
   }
+  free(AlphaM);
+  free(m);
+  free(e_m);
+  free(d_m);
+  free(Key);
+  free(key1);
+  free(key2);
   return 0;
 }
 
