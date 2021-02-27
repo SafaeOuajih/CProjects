@@ -37,12 +37,24 @@ bool char_in_key(char c, char* key){
 }
 
 
+int* char_pos(char c, char**Array){
+  int * pos = new int; 
+  for(int i =0;i< Matrix_dim; i++){
+    for(int j=0; j< Matrix_dim; j++)
+      if (c == Array[i][j]){
+	*pos=i;
+	*(pos+1)=j;
+      }   
+  }
+  return pos;
+}
+
 char** Matrix_Generator(char** Alphab_Matrix, char * Key){
   int row = 0;
   int col = 0;
   Alphab_Matrix = alloc_array(Alphab_Matrix);
   int len = strlen(Key);
-  char c = rand() % ('z'-'a') + 'a';
+  char c =  'a';
   if(len>25){
     std::cout << "#Key lenght is not valid (< 25 char)";
     exit(0);
@@ -55,9 +67,10 @@ char** Matrix_Generator(char** Alphab_Matrix, char * Key){
     *(HKey+i)= *(Key+i);
   }
   for(int i=len;i<Matrix_dim*5; i++){
-    while(char_in_key(c, HKey)){
-      c = rand() % ('z'-'a') + 'a';
-    }
+      while(char_in_key(c, HKey)|| c=='j' ){
+	c = c+1;
+      }
+    
     *(HKey+i)=c;
   }
   if(row_m){
@@ -77,7 +90,7 @@ char** Matrix_Generator(char** Alphab_Matrix, char * Key){
       }  
     }
   }
-  
+  //  /*Print array
   for(int i =0;i< Matrix_dim;i++){
     
     for(int j=0 ; j< Matrix_dim; j++){
@@ -88,5 +101,44 @@ char** Matrix_Generator(char** Alphab_Matrix, char * Key){
     std::cout<<"\n";
 
   }
+  
   return Alphab_Matrix ;
+}
+
+
+char* Playfair_encrypt(char* message, char*e_m , char** Matrix){
+  
+  int len = strlen(message);
+  // std::cout<<"\n lenght of messageis :"<<len;
+  char a ;
+  char b ;
+  for(int i =0;i<len;i++){
+    if(message[i]=='j'){
+      message[i]='i';
+    }
+  }
+  std::cout<< "the message is : "<<message;
+  int* posa=new int;
+  int* posb=new int ;
+  for(int i =0;i<len;i=i+2){
+    a= message[i];
+    b= message[i+1];
+    posa = char_pos(a,Matrix);
+    posb = char_pos(b,Matrix);
+    if(posa[1]==posb[1]){
+      e_m[i]   = Matrix[(posa[0]+1)%5][posa[1]];
+      e_m[i+1] = Matrix[(posb[0]+1)%5][posb[1]];
+    }else{
+      if(posa[0]==posb[0]){
+	e_m[i]   = Matrix[posa[0]][(posa[1]+1)%5];
+	e_m[i+1] = Matrix[posb[0]][(posb[1]+1)%5];
+      }else{
+	e_m[i]   = Matrix[posa[0]][posb[1]];
+	e_m[i+1] = Matrix[posb[0]][posa[1]];
+      }
+    }
+  }
+  delete(posa);
+  delete(posb);
+  return e_m;
 }
