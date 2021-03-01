@@ -57,6 +57,7 @@ int main(int argc, char*argv[]){
     else
         printf("Server listening..\n"); 
   int len = sizeof(client);
+  //Accept connection
   int connected = accept(sockfd,(struct sockaddr*)&client,&len);
   if (connected < 0) { 
     printf("server acccept failed...\n"); 
