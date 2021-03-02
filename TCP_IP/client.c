@@ -3,15 +3,16 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include <sys/socket.h> 
-
+#define size 200
 #define Port 8080 
 #define SA struct sockaddr
 
 int main() 
 { 
     int sockfd; 
+    int n = 0;
     struct sockaddr_in servaddr, cli; 
-  
+    char*buffer = (char*)malloc(size*sizeof(char));
     // socket create and varification 
     sockfd = socket(AF_INET, SOCK_STREAM, 0); 
     if (sockfd == -1) { 
@@ -37,7 +38,12 @@ int main()
   
     // DO THE WORK HERE 	
     
-    
+    while(1){
+    	while ((buffer[n++] = getchar()) != '\n') 
+            ; 
+  
+    	write(sockfd, buffer, sizeof(buff));
+    }
     
     //
     

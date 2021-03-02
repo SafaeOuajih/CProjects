@@ -4,7 +4,8 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <netdb.h> 
-#include <netinet/in.h> 
+#include <netinet/in.h>
+#define size 200
 /*
 struct sockaddr_in {
    uint8_t         sin_len;       // longueur totale     
@@ -29,7 +30,7 @@ int main(int argc, char*argv[]){
  
   int port; // The used port
     
-  char * buffer = (char*)malloc(200*sizeof(char));
+  char * buffer = (char*)malloc(size*sizeof(char));
   printf("#Enter the Port\n");
   if(argc != 2){
     printf("#Invalid argument number \n");
@@ -66,6 +67,23 @@ int main(int argc, char*argv[]){
   else
     printf("server acccept the client...\n"); 
   
+  //chat
+  
+
+  while(1){
+  bzero(buffer, size);	
+  read(sockfd, buffer,sizeof(buffer));
+  printf("The message sent by client is: %s\n",buffer);	
+  if(strncmp("Exit",buffer,4)==0){
+  	printf("End of connection"); 
+  	exit(0); 
+  }else{
+  printf("OK"); 
+  }
+  }
+  
+  
  close(sockfd); 
 return 0;
 }
+//https://www.geeksforgeeks.org/tcp-server-client-implementation-in-c/
