@@ -6,6 +6,8 @@
 #include <netdb.h> 
 #include <netinet/in.h>
 #define size 200
+#define MAX 200
+
 /*
 struct sockaddr_in {
    uint8_t         sin_len;       // longueur totale     
@@ -14,13 +16,41 @@ struct sockaddr_in {
    struct in_addr  sin_addr;      // l'adresse internet   
    unsigned char   sin_zero[8];   // un champ de 8 zéros  
 */
-
+void chat(int sockfd, int id_client){
+  int n =0;
+  char buff[MAX]; 
+  // infinite loop for chat 
+  for (;;) { 
+    bzero(buff, MAX); 
+  
+    // read the message from client and copy it in buffer 
+    read(id_client, buff, sizeof(buff)); 
+    // print buffer which contains the client contents 
+    printf("From client: %s\t To client : ", buff); 
+    bzero(buff, MAX); 
+    n = 0; 
+    // copy server message in the buffer 
+    while ((buff[n++] = getchar()) != '\n') 
+      ; 
+  
+    // and send that buffer to client 
+    write(id_client, buff, sizeof(buff)); 
+  
+    // if msg contains "Exit" then server exit and chat ended. 
+    if (strncmp("exit", buff, 4) == 0) { 
+      printf("Server Exit...\n"); 
+      break; 
+    } 
+  }
+    
+}
 int main(int argc, char*argv[]){
 	
   struct sockaddr_in serveraddr,client;//, client;
   int sockfd;
   sockfd = socket(AF_INET, SOCK_STREAM, 0); //SOCK_STREAM means that it is a TCP socket
                                             // SOCK_DGRAM means that it is a UDP socket
+  int n =0;
   if (sockfd == -1) { 
     printf("Socket Creation failed \n"); 
     exit(0); 
@@ -52,38 +82,24 @@ int main(int argc, char*argv[]){
     printf("Socket successfully binded..\n"); 
 
   if ((listen(sockfd, 5)) != 0) {    // 5 for max pending connections
-        printf("Listen failed...\n"); 
-        exit(0); 
-    } 
-    else
-        printf("Server listening..\n"); 
-  int len = sizeof(client);
+    printf("Listen failed...\n"); 
+    exit(0); 
+  } 
+  else
+    printf("Server listening..\n"); 
+   
   //Accept connection
-  int connected = accept(sockfd,(struct sockaddr*)&client,&len);
-  if (connected < 0) { 
+  int len = sizeof(client);
+  int id_client = accept(sockfd,(struct sockaddr*)&client,&len);
+  if (id_client < 0) { 
     printf("server acccept failed...\n"); 
     exit(0); 
   } 
   else
     printf("server acccept the client...\n"); 
-  
-  //chat
-  
 
-  while(1){
-  bzero(buffer, size);	
-  read(sockfd, buffer,sizeof(buffer));
-  printf("The message sent by client is: %s\n",buffer);	
-  if(strncmp("Exit",buffer,4)==0){
-  	printf("End of connection"); 
-  	exit(0); 
-  }else{
-  printf("OK"); 
-  }
-  }
+  chat(sockfd, id_client);
   
-  
- close(sockfd); 
-return 0;
+  close(sockfd); 
+  return 0;
 }
-//https://www.geeksforgeeks.org/tcp-server-client-implementation-in-c/
