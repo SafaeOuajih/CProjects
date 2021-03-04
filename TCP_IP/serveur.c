@@ -26,7 +26,14 @@ void chat(int sockfd, int id_client){
     // read the message from client and copy it in buffer 
     read(id_client, buff, sizeof(buff)); 
     // print buffer which contains the client contents 
-    printf("From client: %s\t To client : ", buff); 
+    printf("From client: %s\t To client : ", buff);
+      
+    // if msg contains "Exit" then server exit and chat ended. 
+    if (strncmp("exit", buff, 4) == 0) { 
+      printf("Server Exit...\n"); 
+      break; 
+    }
+    
     bzero(buff, MAX); 
     n = 0; 
     // copy server message in the buffer 
@@ -35,12 +42,10 @@ void chat(int sockfd, int id_client){
   
     // and send that buffer to client 
     write(id_client, buff, sizeof(buff)); 
-  
-    // if msg contains "Exit" then server exit and chat ended. 
-    if (strncmp("exit", buff, 4) == 0) { 
+    if (strncmp("exit\n", buff, 6) == 0) { 
       printf("Server Exit...\n"); 
       break; 
-    } 
+    }
   }
     
 }
@@ -100,6 +105,7 @@ int main(int argc, char*argv[]){
 
   chat(sockfd, id_client);
   
-  close(sockfd); 
+  close(sockfd);
+  close(id_client);
   return 0;
 }

@@ -21,12 +21,18 @@ int n = 0;
         n = 0; 
         while ((buff[n++] = getchar()) != '\n') 
             ; 
-        write(sockfd, buff, sizeof(buff)); 
+        write(sockfd, buff, sizeof(buff));
+	if ((strncmp(buff, "exit\n", 6)) == 0) { 
+	  printf("Client Exit...\n");
+	  //close(sockfd);
+	  break; 
+        } 
         bzero(buff, sizeof(buff)); 
         read(sockfd, buff, sizeof(buff)); 
         printf("From Server : %s", buff); 
         if ((strncmp(buff, "exit", 4)) == 0) { 
-            printf("Client Exit...\n"); 
+            printf("Client Exit...\n");
+	    //close(sockfd);
             break; 
         } 
     } 
