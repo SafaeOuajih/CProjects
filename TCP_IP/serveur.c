@@ -16,42 +16,75 @@ struct sockaddr_in {
    struct in_addr  sin_addr;      // l'adresse internet   
    unsigned char   sin_zero[8];   // un champ de 8 zéros  
 */
-void chat(int sockfd, int id_client){
+void chat(int sockfd){
   int n =0;
-  char buff[MAX]; 
-  // infinite loop for chat 
-  for (;;) { 
-    bzero(buff, MAX); 
+  int pid;
+  char buff[MAX];
+  struct sockaddr_in client;
+  int len = sizeof(client);
   
-    // read the message from client and copy it in buffer 
-    read(id_client, buff, sizeof(buff)); 
-    // print buffer which contains the client contents 
-    printf("From client: %s\t To client : ", buff);
-      
-    // if msg contains "Exit" then server exit and chat ended. 
-    if (strncmp("exit", buff, 4) == 0) { 
-      printf("Server Exit...\n"); 
-      break; 
+    // Listen
+    if ((listen(sockfd, 5)) != 0) {    // 5 for max pending connections
+      printf("Listen failed...\n"); 
+      exit(0); 
+    } 
+    else
+      printf("Server listening..\n");
+  // infinite loop for chat 
+  for (;;) {
+    //Accept connection
+    int id_client = accept(sockfd,(struct sockaddr*)&client,&len);
+    if (id_client < 0) { 
+      printf("server acccept failed...\n"); 
+      exit(0); 
+    } 
+    else
+      printf("server acccept the client...\n");
+    
+    //fork
+    pid = fork();
+    if (pid < 0) {
+      perror("ERROR on fork");
+      exit(1);
     }
     
-    bzero(buff, MAX); 
-    n = 0; 
-    // copy server message in the buffer 
-    while ((buff[n++] = getchar()) != '\n') 
-      ; 
+    if(pid>0){
+      close(id_client);
+      // id_client = accept(sockfd,(struct sockaddr*)&client,&len);
+      //continue;  
+    }else{
+      
+      bzero(buff, MAX); 
   
-    // and send that buffer to client 
-    write(id_client, buff, sizeof(buff)); 
-    if (strncmp("exit\n", buff, 6) == 0) { 
-      printf("Server Exit...\n"); 
-      break; 
+      // read the message from client and copy it in buffer 
+      read(id_client, buff, sizeof(buff)); 
+      // print buffer which contains the client contents 
+      printf("From client: %s\t To client : ", buff);
+      
+      // if msg contains "Exit" then server exit and chat ended. 
+      if (strncmp("exit", buff, 4) == 0) { 
+	printf("Server Exit...\n"); 
+	break; 
+      }
+    
+      bzero(buff, MAX); 
+      n = 0; 
+      // copy server message in the buffer 
+      while ((buff[n++] = getchar()) != '\n') 
+	; 
+  
+      // and send that buffer to client 
+      write(id_client, buff, sizeof(buff)); 
+      if (strncmp("exit\n", buff, 6) == 0) { 
+	printf("Server Exit...\n"); 
+	break; 
+      }
     }
   }
-    
 }
 int main(int argc, char*argv[]){
 	
-  struct sockaddr_in serveraddr,client;//, client;
+  struct sockaddr_in serveraddr;//, client;
   int sockfd;
   sockfd = socket(AF_INET, SOCK_STREAM, 0); //SOCK_STREAM means that it is a TCP socket
                                             // SOCK_DGRAM means that it is a UDP socket
@@ -84,28 +117,13 @@ int main(int argc, char*argv[]){
     exit(0); 
   } 
   else
-    printf("Socket successfully binded..\n"); 
+    printf("Socket successfully binded..\n");
+  
 
-  if ((listen(sockfd, 5)) != 0) {    // 5 for max pending connections
-    printf("Listen failed...\n"); 
-    exit(0); 
-  } 
-  else
-    printf("Server listening..\n"); 
-   
-  //Accept connection
-  int len = sizeof(client);
-  int id_client = accept(sockfd,(struct sockaddr*)&client,&len);
-  if (id_client < 0) { 
-    printf("server acccept failed...\n"); 
-    exit(0); 
-  } 
-  else
-    printf("server acccept the client...\n"); 
 
-  chat(sockfd, id_client);
+
+  chat(sockfd);
   
   close(sockfd);
-  close(id_client);
   return 0;
 }
