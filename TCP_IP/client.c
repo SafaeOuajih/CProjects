@@ -26,7 +26,8 @@ int n = 0;
 	  printf("Client Exit...\n");
 	  //close(sockfd);
 	  break; 
-        } 
+        }
+	
         bzero(buff, sizeof(buff)); 
         read(sockfd, buff, sizeof(buff)); 
         printf("From Server : %s", buff); 
@@ -35,6 +36,7 @@ int n = 0;
 	    //close(sockfd);
             break; 
         } 
+	
     } 
 
 }

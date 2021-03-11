@@ -5,6 +5,7 @@
 #include <string.h>
 #include <netdb.h> 
 #include <netinet/in.h>
+#include <signal.h>
 #define size 200
 #define MAX 200
 
@@ -30,43 +31,45 @@ void chat(int sockfd){
     } 
     else
       printf("Server listening..\n");
-  // infinite loop for chat 
+  // infinite loop for chat
+        pid = fork();
+
   for (;;) {
     //Accept connection
+    
     int id_client = accept(sockfd,(struct sockaddr*)&client,&len);
     if (id_client < 0) { 
       printf("server acccept failed...\n"); 
       exit(0); 
     } 
     else
-      printf("server acccept the client...\n");
+      printf("server acccept the client [%d] [%d]\n",getppid(), getpid());
     
     //fork
-    pid = fork();
+    
     if (pid < 0) {
       perror("ERROR on fork");
       exit(1);
     }
     
     if(pid>0){
-      close(id_client);
-      // id_client = accept(sockfd,(struct sockaddr*)&client,&len);
-      //continue;  
-    }else{
-      
+      // close(id_client);
+      //id_client = accept(sockfd,(struct sockaddr*)&client,&len);
+      ;
+    }else{    //fils 
       bzero(buff, MAX); 
-  
       // read the message from client and copy it in buffer 
       read(id_client, buff, sizeof(buff)); 
       // print buffer which contains the client contents 
-      printf("From client: %s\t To client : ", buff);
-      
+      printf("From client: %s\t To client : ", buff);      
       // if msg contains "Exit" then server exit and chat ended. 
       if (strncmp("exit", buff, 4) == 0) { 
-	printf("Server Exit...\n"); 
-	break; 
+	printf("Server Exit...\n");
+	close(id_client);
+	//close(sockfd);
+	//break; 
       }
-    
+      /*
       bzero(buff, MAX); 
       n = 0; 
       // copy server message in the buffer 
@@ -76,11 +79,58 @@ void chat(int sockfd){
       // and send that buffer to client 
       write(id_client, buff, sizeof(buff)); 
       if (strncmp("exit\n", buff, 6) == 0) { 
-	printf("Server Exit...\n"); 
-	break; 
+	printf("Server Exit...\n");
+	close(id_client);
+	//close(sockfd);
+	//break; 
       }
+      */
     }
   }
+}
+
+void chat2(int sockfd){
+  int n =0;
+  int pid;
+  char buff[MAX];
+  struct sockaddr_in client;
+  int len = sizeof(client);
+  int id_client;
+  if ((listen(sockfd, 5)) != 0) {  
+    printf("Listen failed...\n"); 
+    exit(0); 
+    
+  } 
+  
+  else
+    printf("Server listening..\n");
+  pid = fork();
+  id_client = accept(sockfd,(struct sockaddr*)&client,&len);
+  if (id_client < 0) { 
+    printf("server acccept failed...\n"); 
+    exit(0); 
+  } 
+  else
+    printf("server acccept the client [%d] [%d]\n",getppid(), getpid());
+  
+  while(1){
+    bzero(buff, MAX); 
+    read(id_client, buff, sizeof(buff)); 
+    printf("From client: %s\t To client : ", buff);      
+    if (strncmp("exit", buff, 4) == 0) { 
+      printf("Server Exit...\n");
+      close(id_client);
+    }
+    bzero(buff, MAX); 
+    n = 0; 
+    while ((buff[n++] = getchar()) != '\n') 
+      ; 
+    write(id_client, buff, sizeof(buff)); 
+    if (strncmp("exit\n", buff, 6) == 0) { 
+      printf("Server Exit...\n");
+      close(id_client);
+    }
+  } 
 }
 int main(int argc, char*argv[]){
 	
@@ -118,12 +168,10 @@ int main(int argc, char*argv[]){
   } 
   else
     printf("Socket successfully binded..\n");
+
+  chat2(sockfd);
   
-
-
-
-  chat(sockfd);
   
-  close(sockfd);
+  //  close(sockfd);
   return 0;
 }
