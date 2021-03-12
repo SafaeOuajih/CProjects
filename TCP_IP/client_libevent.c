@@ -20,8 +20,7 @@ static void conn_writecb(struct bufferevent *, void *);
 static void conn_readcb(struct bufferevent *, void *);
 static void conn_eventcb(struct bufferevent *, short, void *);
 
-int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     struct event_base *base;
 
@@ -62,8 +61,7 @@ main(int argc, char **argv)
     return 0;
 }
 
-static void
-conn_writecb(struct bufferevent *bev, void *user_data)
+static void conn_writecb(struct bufferevent *bev, void *user_data)
 {
     //printf("touch conn_writecb\n");
     
@@ -74,29 +72,33 @@ conn_writecb(struct bufferevent *bev, void *user_data)
 //    }
 }
 
-static void
-conn_readcb(struct bufferevent *bev, void *user_data)
+static void conn_readcb(struct bufferevent *bev, void *user_data)
 {
-    //printf("touch conn_readcb\n");
-    memset(g_szReadMsg, 0x00, sizeof(g_szReadMsg));
-    struct evbuffer *input = bufferevent_get_input(bev);
-    size_t sz = evbuffer_get_length(input);
-    if (sz > 0)
+  int n;
+  n=0;
+  memset(g_szReadMsg, 0x00, sizeof(g_szReadMsg));
+  struct evbuffer *input = bufferevent_get_input(bev);
+  size_t sz = evbuffer_get_length(input);
+  if (sz > 0)
     {
-        bufferevent_read(bev, g_szReadMsg, sz);
-        printf("ser:>>%s\n", g_szReadMsg);
-        memset(g_szWriteMsg, 0, sizeof(g_szWriteMsg));
-        //snprintf(g_szWriteMsg, sizeof(g_szWriteMsg)-1, "hi server,this count is %d", g_iCnt);
-        g_iCnt++;
-        //printf("cli:>>");
-        //gets(g_szWriteMsg);
-        //scanf("%s", g_szWriteMsg);
-        //bufferevent_write(bev, g_szWriteMsg, strlen(g_szWriteMsg));
+      bufferevent_read(bev, g_szReadMsg, sz);
+      printf("server:>>\n\n");
+      printf("%s\n", g_szReadMsg);
+      memset(g_szWriteMsg, 0, sizeof(g_szWriteMsg));
+      //snprintf(g_szWriteMsg, sizeof(g_szWriteMsg)-1, "hi server,this count is %d", g_iCnt);
+      g_iCnt++;      
     }
+  printf("Enter the string : "); 
+  while (( g_szWriteMsg[n++] = getchar()) != '\n') 
+    ;
+  bufferevent_write(bev, g_szWriteMsg, strlen(g_szWriteMsg));
+  if ((strncmp( g_szWriteMsg, "exit\n", 6)) == 0) { 
+    printf("Client Exit...\n");
+    bufferevent_free(bev);
+  }
 }
 
-static void
-conn_eventcb(struct bufferevent *bev, short events, void *user_data)
+static void conn_eventcb(struct bufferevent *bev, short events, void *user_data)
 {
     if (events & BEV_EVENT_EOF) {
         printf("Connection closed.\n");

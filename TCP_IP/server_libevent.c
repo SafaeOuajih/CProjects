@@ -11,12 +11,14 @@
 #include <event2/listener.h>
 #include <event2/util.h>
 #include <event2/event.h>
-
+#define lenf 39
 static const int PORT = 8080;
 
 static char buffer[256] = {0};
-static int g_iCnt = 0;
+static char bufferw[256] = {0};
+static char file[500]= "/home/safae/Documents/CProjects/TCP_IP/";
 
+static int g_iCnt = 0;
 static void listener_cb(struct evconnlistener *, evutil_socket_t, struct sockaddr *, int socklen, void *);
 static void conn_writecb(struct bufferevent *, void *);
 static void conn_readcb(struct bufferevent *, void *);
@@ -94,42 +96,59 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
     bufferevent_write(bev, welcome, strlen(welcome));
 }
 
-static void
-conn_writecb(struct bufferevent *bev, void *user_data)
+static void conn_writecb(struct bufferevent *bev, void *user_data)
 {
-    //printf("touch conn_writecb\n");
-    
-//    if ( strlen(g_szWriteMsg) > 0 )
-//    {
-//        bufferevent_write(bev, g_szWriteMsg, strlen(g_szWriteMsg));
-//        memset(g_szWriteMsg, 0x00, sizeof(g_szWriteMsg));
-//    }
 }
 
-static void
-conn_readcb(struct bufferevent *bev, void *user_data)
+static void conn_readcb(struct bufferevent *bev, void *user_data)
 {
-    //printf("touch conn_readcb\n");
-    memset(buffer, 0x00, sizeof(buffer));
-    struct evbuffer *input = bufferevent_get_input(bev);
-    size_t sz = evbuffer_get_length(input);
-    if (sz > 0)
+  //printf("touch conn_readcb\n");
+  FILE *fptr;
+  char ch;
+  int n = 0;
+  int lenb =0;
+  memset(buffer, 0x00, sizeof(buffer));
+  struct evbuffer *input = bufferevent_get_input(bev);
+  size_t sz = evbuffer_get_length(input);
+  if (sz > 0)
     {
-        bufferevent_read(bev, buffer, sz);
-        printf("cli:>>%s\n", buffer);
-	// memset(buffer, 0x00, sizeof(buffer));
-        //snprintf(buffer, sizeof(buffer)-1, "hi client, this count is %d", g_iCnt);
-        g_iCnt++;
-        //printf("ser:>>");
-        //gets(g_szWriteMsg);
-        //scanf("%s", g_szWriteMsg);
-        //*buffer = "haniii";
-        //bufferevent_write(bev, buffer, strlen(buffer));
+      bufferevent_read(bev, buffer, sz);
+      printf("client:>>\n\n");
+      printf("%s\n", buffer);
+      g_iCnt++;
+      if ((strncmp( buffer, "show", 4)) == 0)
+	{
+	  lenb = strlen(buffer);
+	  n = lenf;
+	  file[lenf]='a';
+	  for(int i =5;i<lenb-1;i++){
+	    file[n]= buffer[i];
+	    n++;
+	  }
+	  file[n+1]=0;
+	  fptr = (fopen(file, "r"));
+	  if(fptr == NULL)
+	    {
+	      printf("the file is : %snow\n",file);
+	      printf("Error! Failed file");
+	      // strcpy(bufferw,"Error openning file");
+	      //bufferevent_write(bev, bufferw, strlen(bufferw));
+	      exit(1);
+	    }
+	  n=0;
+	  while ((ch = fgetc(fptr)) != EOF)
+	    {
+	      bufferw[n++]=ch;
+	    }
+	  bufferw[n+1]=0;
+	  fclose(fptr);
+	  bufferevent_write(bev, bufferw, strlen(bufferw));
+	}
     }
+  
 }
 
-static void
-conn_eventcb(struct bufferevent *bev, short events, void *user_data)
+static void conn_eventcb(struct bufferevent *bev, short events, void *user_data)
 {
     if (events & BEV_EVENT_EOF) {
         printf("Connection closed.\n");
@@ -137,7 +156,6 @@ conn_eventcb(struct bufferevent *bev, short events, void *user_data)
         printf("Got an error on the connection: %s\n",
             strerror(errno));/*XXX win32*/
     }
-    /* None of the other events can happen here, since we haven't enabled
-     * timeouts */
+    
     bufferevent_free(bev);
 }
