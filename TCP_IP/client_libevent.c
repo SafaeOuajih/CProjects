@@ -63,13 +63,7 @@ int main(int argc, char **argv)
 
 static void conn_writecb(struct bufferevent *bev, void *user_data)
 {
-    //printf("touch conn_writecb\n");
-    
-//    if ( strlen(g_szWriteMsg) > 0 )
-//    {
-//        bufferevent_write(bev, g_szWriteMsg, strlen(g_szWriteMsg));
-//        memset(g_szWriteMsg, 0x00, sizeof(g_szWriteMsg));
-//    }
+  
 }
 
 static void conn_readcb(struct bufferevent *bev, void *user_data)
@@ -104,7 +98,7 @@ static void conn_eventcb(struct bufferevent *bev, short events, void *user_data)
         printf("Connection closed.\n");
     } else if (events & BEV_EVENT_ERROR) {
         printf("Got an error on the connection: %s\n",
-            strerror(errno));/*XXX win32*/
+            strerror(errno));
     }
     else if(events & BEV_EVENT_CONNECTED)
     {

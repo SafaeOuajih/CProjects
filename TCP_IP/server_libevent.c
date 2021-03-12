@@ -12,7 +12,7 @@
 #include <event2/util.h>
 #include <event2/event.h>
 #define lenf 39
-static const int PORT = 8080;
+static const int PORT = 8000;
 
 static char buffer[256] = {0};
 static char bufferw[256] = {0};
