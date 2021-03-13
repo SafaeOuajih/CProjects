@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char * argv[]) {
 
-    Dessin* dessin = new Dessin( "C:/Users/Safae/CLionProjects/PG208/description.txt", "Sortie.bmp" ,1);
+    Dessin* dessin = new Dessin( "/home/safae/Documents/CProjects/DessinVectoriel/description.txt", "Sortie.bmp" ,1);
     dessin->drawFormes();
     delete dessin;
     //  CImage*img ;
