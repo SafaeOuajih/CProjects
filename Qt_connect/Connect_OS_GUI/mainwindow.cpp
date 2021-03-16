@@ -29,26 +29,21 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked() // Generate
+void MainWindow::on_pushButton_clicked() // show picture
 {
-    if(i){
-    ui->label->setPixmap(*pixmap_img);
-    }
+    //if(i){
+        pixmap_img = new QPixmap("/home/safae/Connect_OS_GUI/Sortie.bmp");
+        i=1;
+        w = pixmap_img->width();
+        h = pixmap_img->height();
+        ui->label->setFixedHeight(h);
+        ui->label->setFixedWidth(w);
+        ui->scrollArea->setWidget(ui->label);
+        ui->label->setPixmap(*pixmap_img);
+    //}
 }
 
-void MainWindow::on_pushButton_2_clicked() // show picture
-{
-    Dessin* dessin = new Dessin( "/home/safae/Documents/CProjects/DessinVectoriel/description.txt", "/home/safae/Connect_OS_GUI/Sortie.dib" ,1);
-     dessin->drawFormes();
-    //delete dessin;
-    pixmap_img = new QPixmap("/home/safae/Connect_OS_GUI/Sortie.bmp");
-    i=1;
-    w = pixmap_img->width();
-    h = pixmap_img->height();
-    ui->label->setFixedHeight(h);
-    ui->label->setFixedWidth(w);
-    ui->scrollArea->setWidget(ui->label);
-}
+
 
 void MainWindow::on_pushButton_3_clicked() // add forms
 {

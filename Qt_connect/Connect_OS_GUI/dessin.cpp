@@ -10,6 +10,7 @@
 #include "Carre.h"
 #include "Cercle.h"
 #include <fstream>
+
 using namespace std;
 
 Dessin::Dessin(string filename1, string filename2,int echelle_d) {
@@ -226,3 +227,89 @@ int Dessin::getLargeur(){
 int Dessin::getEchelle(){
     return echelle;
 }
+/*
+void Dessin::drawFormes2(QHBoxLayout * h_layout){
+    int nbLignes = 0;
+    string typeForme;
+    int x1_dim =0;
+    int y1_dim=0;
+    int x2_dim=0;
+    int y2_dim=0;
+    int couleur=0;
+    int trans = 0;
+    QWidget *type = h_layout->itemAt(0)->widget();
+    QString str = type->windowIconText();
+    cout << typeForme << endl;
+    if (typeForme == "point") {
+        fichier >> x1_dim;
+        fichier >> y1_dim;
+        fichier >> couleur;
+        fichier >> trans;
+        point = new Point(x1_dim, y1_dim, couleur, draw_txt, picture, trans,echelle);
+        //forms.push_back(*point);
+        //cout << "push done point" << endl;
+        point->plot(img);
+        image->setImage(img);
+        image->SaveBMP(picture);
+        //delete point;
+    } else if (typeForme == "ligne") {
+        fichier >> x1_dim;
+        fichier >> y1_dim;
+        fichier >> x2_dim;
+        fichier >> y2_dim;
+        fichier >> couleur;
+        fichier >> trans;
+        ligne = new Ligne(x1_dim, y1_dim, x2_dim, y2_dim, couleur, draw_txt, picture, trans,echelle);
+        //forms.push_back(*point);
+        //cout << "push done ligne" << endl;
+        ligne->plot(img);
+        image->setImage(img);
+        image->SaveBMP(picture);
+        //delete ligne;
+    } else if (typeForme == "rectangle") {
+        fichier >> x1_dim;
+        fichier >> y1_dim;
+        fichier >> x2_dim;
+        fichier >> y2_dim;
+        fichier >> couleur;
+        fichier >> trans;
+        rectangle = new Rectangle(x1_dim, y1_dim, x2_dim, y2_dim, couleur, draw_txt, picture,
+                                  trans,echelle);
+        cout << "push done rectangle" << endl;
+        rectangle->plot(img);
+        image->setImage(img);
+        image->SaveBMP(picture);
+        //delete rectangle;
+    } else if (typeForme == "carre") {
+        fichier >> x1_dim;
+        fichier >> y1_dim;
+        fichier >> x2_dim;
+        fichier >> y2_dim;
+        fichier >> couleur;
+        fichier >> trans;
+        carre = new Carre(x1_dim, y1_dim, x2_dim, y2_dim, couleur, draw_txt, picture, trans,echelle);
+        //cout << "push done carre" << endl;
+        carre->plot(img);
+        image->setImage(img);
+        image->SaveBMP(picture);
+        //delete carre;
+    } else if (typeForme == "cercle") {
+
+        fichier >> x1_dim;
+        fichier >> y1_dim;
+        fichier >> x2_dim;
+        fichier >> couleur;
+        fichier >> trans;
+        cercle = new Cercle(x1_dim, y1_dim, x2_dim, couleur, draw_txt, picture, trans,echelle);
+        //cout << "push done cercle" << endl;
+        cercle->plot(img);
+        image->setImage(img);
+        image->SaveBMP(picture);
+        //delete cercle;
+
+    }
+
+
+    cout << "Done saving\n" << endl;
+}
+*/

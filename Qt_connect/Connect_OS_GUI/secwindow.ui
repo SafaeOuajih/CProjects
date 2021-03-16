@@ -6,22 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
-    <height>480</height>
+    <width>764</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
-    <widget class="QPushButton" name="pushButton">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="pushButton_3">
      <property name="text">
-      <string>PushButton</string>
+      <string>Ligne</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="3" column="0">
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="text">
+      <string>carré</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="7">
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -31,16 +38,44 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>524</width>
-        <height>460</height>
+        <width>658</width>
+        <height>371</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout9"/>
+        <layout class="QVBoxLayout" name="verticalLayout" stretch=""/>
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QPushButton" name="Done">
+     <property name="text">
+      <string>Générer</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Cercle</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>Triangle</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="text">
+      <string>Point</string>
+     </property>
     </widget>
    </item>
   </layout>

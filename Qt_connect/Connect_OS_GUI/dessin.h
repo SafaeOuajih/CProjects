@@ -4,12 +4,15 @@
 
 #ifndef PG208_DESSIN_H
 #define PG208_DESSIN_H
+#include <QWidget>
 #include "CBitmap.h"
 #include "CImage.h"
 //#include "Point.h"
 //#include "forme.h"
 #include <vector>
 #include <string>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <iostream>
 class Forme;
 class Point;
@@ -18,7 +21,8 @@ class Rectangle;
 class Carre;
 class Cercle ;
 
-class Dessin{
+class Dessin: public QWidget{
+    Q_OBJECT
 protected:
     CImage  *img;
     CBitmap *image;
@@ -33,13 +37,17 @@ protected:
     Rectangle* rectangle ;
     Carre * carre;
     Cercle * cercle;
+private slots:
+    void drawFormes();
+
 public:
     Dessin( string filename1, string filename2 , int echelle_d );
     ~Dessin();
-    void drawFormes();
     int getHauteur();
     int getLargeur();
     int getEchelle();
+    void drawFormes2(QHBoxLayout * h_layout);
+    QHBoxLayout * layout ;
 };
 
 
