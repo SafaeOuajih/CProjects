@@ -9,6 +9,8 @@
 #include <Ligne.h>
 #include <Point.h>
 #include <Rectangle.h>
+#include "ui_secwindow.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -16,14 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->progressBar, SLOT(setValue(int)));
     //, SIGNAL(valueChanged(int), ui->progressBar));
-
-    QPixmap *pixmap_img = new QPixmap("Sortie.bmp");
-/*    int w = pixmap_img->width();
-    int h = pixmap_img->height();
-    ui->label->setFixedHeight(h);
-    ui->label->setFixedWidth(w);
-    ui->scrollArea->setWidget(ui->label);
-*/
+    secwindow secw;
+    secw.setModal(true); //it'll set the secwindow
+    i=0;
 }
 
 MainWindow::~MainWindow()
@@ -32,12 +29,29 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked() // Generate
 {
-;
+    if(i){
+    ui->label->setPixmap(*pixmap_img);
+    }
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_2_clicked() // show picture
 {
-;
+    Dessin* dessin = new Dessin( "/home/safae/Documents/CProjects/DessinVectoriel/description.txt", "/home/safae/Connect_OS_GUI/Sortie.dib" ,1);
+     dessin->drawFormes();
+    //delete dessin;
+    pixmap_img = new QPixmap("/home/safae/Connect_OS_GUI/Sortie.bmp");
+    i=1;
+    w = pixmap_img->width();
+    h = pixmap_img->height();
+    ui->label->setFixedHeight(h);
+    ui->label->setFixedWidth(w);
+    ui->scrollArea->setWidget(ui->label);
+}
+
+void MainWindow::on_pushButton_3_clicked() // add forms
+{
+    secw.exec(); //shows secwindow when button is pressed
+
 }

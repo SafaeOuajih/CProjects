@@ -38,7 +38,7 @@
 
 CBitmap::CBitmap(){
 
-    cout << "Creating a CBitmap()" << endl;
+    //cout << "Creating a CBitmap()" << endl;
 
     bfType          = 19778;
 
@@ -308,7 +308,7 @@ bool CBitmap::LoadBMP(string name){
 
 bool CBitmap::SaveBMP(string name){
 
-    cout << "Starting picture saving..." << endl;
+    //cout << "Starting picture saving..." << endl;
 
     ofstream myfile ( name.c_str(), ios::out | ios::binary  );
 
@@ -406,7 +406,7 @@ bool CBitmap::SaveBMP(string name){
 
     }
 
-    cout << "Picture saving finished !" << endl;
+    //cout << "Picture saving finished !" << endl;
 
     return true;
 

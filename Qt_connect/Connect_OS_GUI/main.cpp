@@ -13,8 +13,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Dessin* dessin = new Dessin( "/home/safae/Documents/CProjects/DessinVectoriel/description.txt", "Sortie.bmp" , 1);
-    dessin->drawFormes();
     MainWindow w;
     w.show();
     return a.exec();

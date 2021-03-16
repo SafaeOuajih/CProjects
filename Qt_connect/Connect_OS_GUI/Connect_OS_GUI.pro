@@ -21,7 +21,8 @@ SOURCES += \
     dessin.cpp \
     forme.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    secwindow.cpp
 
 HEADERS += \
     CBitmap.h \
@@ -35,10 +36,12 @@ HEADERS += \
     Rectangle.h \
     dessin.h \
     forme.h \
-    mainwindow.h
+    mainwindow.h \
+    secwindow.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    secwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

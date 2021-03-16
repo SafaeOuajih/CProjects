@@ -126,7 +126,7 @@ void Dessin::drawFormes(){
         int position = fichier.tellg();
         fichier.seekg(position, ios::beg);
         position = fichier.tellg();
-        cout << "Et maintenant" << position << endl;
+        //cout << "Et maintenant" << position << endl;
         string typeForme;
         int x1_dim =0;
         int y1_dim=0;
@@ -145,7 +145,7 @@ void Dessin::drawFormes(){
                 fichier >> trans;
                 point = new Point(x1_dim, y1_dim, couleur, draw_txt, picture, trans,echelle);
                 //forms.push_back(*point);
-                cout << "push done point" << endl;
+                //cout << "push done point" << endl;
                 point->plot(img);
                 image->setImage(img);
                 image->SaveBMP(picture);
@@ -159,7 +159,7 @@ void Dessin::drawFormes(){
                 fichier >> trans;
                 ligne = new Ligne(x1_dim, y1_dim, x2_dim, y2_dim, couleur, draw_txt, picture, trans,echelle);
                 //forms.push_back(*point);
-                cout << "push done ligne" << endl;
+                //cout << "push done ligne" << endl;
                 ligne->plot(img);
                 image->setImage(img);
                 image->SaveBMP(picture);
@@ -186,23 +186,25 @@ void Dessin::drawFormes(){
                 fichier >> couleur;
                 fichier >> trans;
                 carre = new Carre(x1_dim, y1_dim, x2_dim, y2_dim, couleur, draw_txt, picture, trans,echelle);
-                cout << "push done carre" << endl;
+                //cout << "push done carre" << endl;
                 carre->plot(img);
                 image->setImage(img);
                 image->SaveBMP(picture);
                 //delete carre;
             } else if (typeForme == "cercle") {
+
                 fichier >> x1_dim;
                 fichier >> y1_dim;
                 fichier >> x2_dim;
                 fichier >> couleur;
                 fichier >> trans;
                 cercle = new Cercle(x1_dim, y1_dim, x2_dim, couleur, draw_txt, picture, trans,echelle);
-                cout << "push done cercle" << endl;
+                //cout << "push done cercle" << endl;
                 cercle->plot(img);
                 image->setImage(img);
                 image->SaveBMP(picture);
                 //delete cercle;
+
             }
         }
     }
@@ -210,6 +212,7 @@ void Dessin::drawFormes(){
     {
         cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
     }
+    cout << "Done saving\n" << endl;
     fichier.close();
 }
 
