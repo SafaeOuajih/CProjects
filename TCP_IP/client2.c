@@ -8,8 +8,6 @@
 #define SA struct sockaddr
 #define MAX 200
 
-
-
 void chat(int sockfd){
 
 int n = 0;
